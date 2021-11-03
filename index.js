@@ -1,8 +1,12 @@
-const { https } = require("firebase-functions");
+const functions = require("firebase-functions");
 const next = require("next");
 const express = require("express");
 const routes = require("next-routes");
 const cookieParser = require("cookie-parser");
+
+let config = {};
+if (Object.keys(functions.config()).length > 0) config = functions.config();
+else config = require("./env.json");
 
 const app = next({
   dev: false,
@@ -46,12 +50,12 @@ server.get("/api/profile", (req, res) => {
   res.status(401).json({ message: "Unauthorized" });
 });
 
-server.get("/api/tester", (req, res) => {
-  res.status(401).json({ message: "Unauthorized" });
+server.get("/tester", (req, res) => {
+  res.json({ envalue: config.user.id });
 });
 
 server.get("*", (req, res) => {
   return handle(req, res);
 });
 
-exports.nextServer = https.onRequest(server);
+exports.nextServer = functions.https.onRequest(server);

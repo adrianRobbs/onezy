@@ -12,8 +12,6 @@ let config = {};
 if (Object.keys(functions.config()).length > 0) config = functions.config();
 else config = require("./env.json");
 
-console.log("killer ", config);
-
 app.prepare().then(() => {
   const server = express();
   server.use(express.json({ limit: "30mb" }));
